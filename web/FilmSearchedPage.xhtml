@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Film Searched</title>
+        <style type="text/css" media="screen">
+            h1{
+                color:whitesmoke;
+                text-align: center;
+                background-color:brown;
+                   
+            }
+
+            table{
+                  border-collapse:collapse;
+                  border:1px solid #FF0000;
+                  text-align: right;
+                  
+                 }
+
+            table td{
+                  border:1px solid #FF0000;
+                    }
+        </style>
+    </h:head>
+    <h:body>
+        <h1> My Cinema</h1>
+        <h2> Showings </h2>
+        <h:form>
+            
+            <table><h:dataTable value="#{showingBean.allSearchedList}"
+                         var="Showing">
+                
+                <h:column>
+                    <f:facet name="header">Showing ID</f:facet>
+                    <h:outputText value="#{Showing.showingID}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Film ID</f:facet>
+                    <h:outputText value="#{Showing.film.filmID}"/>
+                </h:column>
+                    
+                <h:column>
+                    <f:facet name="header"> Name</f:facet>
+                    <h:outputText value="#{Showing.film.filmName}"/>
+                </h:column>
+                                    
+                <h:column>
+                    <f:facet name="header">Cinema Name</f:facet>
+                    <h:outputText value="#{Showing.screen.cinema.cinemaName}"/>
+                </h:column>
+                    
+                <h:column>
+                    <f:facet name="header">Screen ID</f:facet>
+                    <h:outputText value="#{Showing.screen.screenID}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Showing Time</f:facet>
+                    <h:outputText value="#{Showing.showingTime}"/>
+                </h:column>
+                    
+                <h:column>
+                    <h:commandButton type="submit" value="View" action="#{showingBean.ViewShowing(Showing.showingID)}" immediate="true" />
+                </h:column>
+            
+            </h:dataTable></table>
+            <button2><h:commandButton type="submit" value="Return" action="UserPage" immediate="true" /></button2>
+        </h:form>
+    </h:body>
+</html>
+

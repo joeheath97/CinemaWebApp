@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Add Film</title>
+                <style>
+            h1{
+                color:whitesmoke;
+                text-align: center;
+                background-color:brown;      
+            }
+            
+        </style>
+    </h:head>
+    <h:body>
+        <h1>Admin View</h1>
+        <h1>My Cinema</h1>
+        <h2>Add Film</h2>   
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputText value="Film Name :" />
+                <h:inputText value="#{addFilmBean.filmName}"/>
+                <h:outputText value="Lead Actor :" />
+                <h:inputText value="#{addFilmBean.leadActor}"/>
+                <h:outputText value="Duration (H:mm) :" />
+                <h:inputText value="#{addFilmBean.duration}"/>
+            </h:panelGrid>
+            <button1><h:commandButton type="Submit" value="Create" action="#{addFilmBean.addFilm()}" /></button1>
+            <button2><h:commandButton type="submit" value="Return" action="AdminPage" immediate="true" /></button2>
+        </h:form>
+    </h:body>
+</html>
+

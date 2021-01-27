@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>User Page</title>
+        <style>
+            h1{
+                color:whitesmoke;
+                text-align: center;
+                background-color:brown;
+                   
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h1>My Cinema</h1>
+        <h1> Hello, #{userBean.userDetails.userName} </h1>
+        <h:form>
+            <h:panelGrid columns="2">
+            Search Film :
+            <h:inputText value="#{showingBean.search}"/>
+            <h:commandButton type="submit" value="Search" action="FilmSearchedPage" />
+            </h:panelGrid>
+        </h:form>
+        <h:form>
+            <h:panelGrid>
+            View Showings :
+            <h:commandButton type="submit" value="View Showings" action="UserViewAllShowings" immediate="true" />
+            View Bookings :
+            <h:commandButton type="submit" value="View Bookings" action="ViewAllBookings" immediate="true" />
+            Log out :
+            <h:commandButton type="submit" value="Log out" action="#{userBean.LogOut()}" immediate="true" />
+            </h:panelGrid>
+            
+        </h:form>
+    </h:body>
+</html>
+

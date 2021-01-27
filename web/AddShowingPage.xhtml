@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Add Showing</title>
+        <style>
+            h1{
+                color:whitesmoke;
+                text-align: center;
+                background-color:brown;
+                   
+            }
+  
+            table{  
+                  border-collapse:collapse;
+                  border:1px solid #FF0000;
+                  text-align: right;
+                  
+                 }
+
+            table td{
+                  border:1px solid #FF0000;
+                    }
+        </style>
+    </h:head>
+    <h:body>
+        <h1>Admin View</h1>
+        <h1>My Cinema</h1>
+        <h2>Add Showing</h2>
+        
+        <h:form>
+            <h:panelGrid columns="2">
+
+                <h:outputText value="Film ID :" />
+                <h:inputText value="#{addShowingBean.filmID}"/>
+                <h:outputText value="Screen ID :" />
+                <h:inputText value="#{addShowingBean.screenID}"/>
+                <h:outputText value="Showing Time (24hr) :" />
+                <h:inputText value="#{addShowingBean.showingTime}"/>
+            </h:panelGrid>
+            <h:commandButton type="Submit" value="Create" action="#{addShowingBean.addShowing()}" />
+            <button2><h:commandButton type="submit" value="Return" action="ViewAllShowings" immediate="true" /></button2>
+        </h:form>
+        
+        <h:form>
+            <table><h:dataTable value="#{filmBean.allFilm}"
+                         var="film">
+                
+                <h:column>
+                    <f:facet name="header">Film Id</f:facet>
+                    <h:outputText value="#{film.filmID}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Film Name</f:facet>
+                    <h:outputText value="#{film.filmName}"/>
+                </h:column>
+                               
+                <h:column>
+                    <f:facet name="header">Lead Actor</f:facet>
+                    <h:outputText value="#{film.leadActor}"/>
+                </h:column>
+                                
+                <h:column>
+                    <f:facet name="header">Duration</f:facet>
+                    <h:outputText value="#{film.duration}"/>
+                </h:column>
+            
+            </h:dataTable></table>
+
+        </h:form>
+        <h:form>
+            <table><h:dataTable value="#{screenBean.allScreen}"
+                         var="Screen">
+                    
+                                   
+                <h:column>
+                    <f:facet name="header">Screen ID</f:facet>
+                    <h:outputText value="#{Screen.screenID}"/>
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Cinema ID</f:facet>
+                    <h:outputText value="#{Screen.cinema.cinemaID}"/>
+                </h:column>
+
+            
+            </h:dataTable></table>
+            
+        </h:form>
+            
+    </h:body>
+</html>
+
