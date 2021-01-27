@@ -6,7 +6,8 @@ import Gateway.FilmGateway;
 import java.util.*;
 
 public class FilmManager {
-        private ArrayList<FilmDTO> FilmList = new ArrayList<>();
+    
+    private ArrayList<FilmDTO> FilmList = new ArrayList<>();
     private FilmGateway gateway = new FilmGateway();
 
     

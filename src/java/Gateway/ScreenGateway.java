@@ -5,6 +5,7 @@
  */
 package Gateway;
 
+import DTO.CinemaDTO;
 import DTO.FilmDTO;
 import DTO.ScreenDTO;
 import dbase.DBManager;
@@ -30,15 +31,18 @@ public class ScreenGateway {
      try
      {
          
-         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Screens"); // statement which gets everything in Screen tabel
+         String sqlStr = "SELECT Screens.ScreenId, Cinemas.CinemaId, Cinemas.CinemaName, Cinemas.Address"
+                 + " FROM Screens JOIN Cinemas on Screens.CinemaId = Cinemas.CinemaId"; 
+         PreparedStatement stmt = conn.prepareStatement(sqlStr); 
          ResultSet rs = stmt.executeQuery();
          System.out.println("making DTO");
          while (rs.next())
          {
-             ScreenDTO Screen = new ScreenDTO(        // this create a ScreenDTO called "film" 
+             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaId"), rs.getString("CinemaName"), rs.getString("Address"));
+             ScreenDTO Screen = new ScreenDTO(         
                      rs.getString("ScreenId"),
-                     rs.getInt("CinemaID"));
-                     ScreenList.add(Screen);                // adds the ScreenDTO to the arrayList
+                     cinema);
+                     ScreenList.add(Screen);                
          }
          rs.close();
          stmt.close();
@@ -51,39 +55,37 @@ public class ScreenGateway {
      return ScreenList; // passes the arrayList back to the ScreenManager 
     }
     
-    public ScreenDTO findByScreenID(String ScreenID){ 
-        System.out.println("beginning screen find");
-        ScreenDTO screen = null;
-        try
-        {
-        Connection conn = connection.getConnect();
-        System.out.println("Connecting Screen");
-        String sqlStr = ("SELECT * FROM Screens WHERE ScreenID = ?"); 
-        PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setString(1, ScreenID);
-        ResultSet rs = stmt.executeQuery();
-            System.out.println("constructing DTO");
-            while (rs.next())
-            {
-               
-             screen = new ScreenDTO(
-                     rs.getString("ScreenID"),
-                     rs.getInt("CinemaID"));
-            }
-            System.out.println("complete.");
-        }
-        
-        catch (SQLException sqle)
-        {
-            System.out.println(sqle);
-        }
-        
-        return screen;
-    }
-    
-    public boolean insert(String ScreenID, int CinemaID){ // not needed
-        return true;
-    }
+//    public ScreenDTO find(String ScreenID){ 
+//        System.out.println("beginning screen find");
+//        ScreenDTO Screen = null;
+//        try
+//        {
+//           
+//        Connection conn = connection.getConnect();
+//        String sqlStr = "SELECT Screens.ScreenID, Cinemas.CinemaID, Cinemas.CinemaName, Cinemas.Address"
+//                 + " FROM Screens JOIN Cinemas on Screens.CinemaID = Cinemas.CinemaID"
+//                + "WHERE Screens.ScreenID =?"; 
+//         PreparedStatement stmt = conn.prepareStatement(sqlStr); 
+//         stmt.setString(1,ScreenID);
+//         ResultSet rs = stmt.executeQuery();
+//         System.out.println("making DTO");
+//         while (rs.next())
+//         {
+//             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaID"), rs.getString("CinemaName"), rs.getString("Address"));
+//             Screen = new ScreenDTO(         
+//                     rs.getString("ScreenID"),
+//                     cinema);
+//  
+//        }
+//        }
+//        catch (SQLException sqle)
+//        {
+//            System.out.println(sqle);
+//            sqle.printStackTrace();
+//        }
+//        
+//        return Screen;
+//    }
 
     
 }

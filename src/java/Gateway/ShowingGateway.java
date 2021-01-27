@@ -6,6 +6,9 @@
 package Gateway;
 
 
+import DTO.CinemaDTO;
+import DTO.FilmDTO;
+import DTO.ScreenDTO;
 import DTO.ShowingDTO;
 import dbase.DBManager;
 import java.sql.Connection;
@@ -30,16 +33,19 @@ public class ShowingGateway {
      try
      {
          
-         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Showings"); // statement which gets everything in showing tabel
+         PreparedStatement stmt = conn.prepareStatement("SELECT Showings.ShowingId, Films.filmId, Films.FilmName,Screens.ScreenId,Showings.ShowingTime,Cinemas.CinemaId, Cinemas.CinemaName, Cinemas.Address"
+                 + " FROM Showings JOIN Films on Showings.FilmId = Films.FilmId"
+                 +               " JOIN Screens on Showings.ScreenId = Screens.ScreenId"
+                 +               " JOIN Cinemas on Screens.CinemaId = Cinemas.CinemaId"); // statement which gets everything in showing tabel
          ResultSet rs = stmt.executeQuery();
          while (rs.next())
          {
-             ShowingDTO showing = new ShowingDTO(        // this create a ShowingDTO called "showing" 
-                     rs.getInt("ShowingID"),
-                     rs.getInt("FilmID"),
-                     rs.getString("ScreenId"),
-                     rs.getString("ShowingTime"));
-                     showingList.add(showing);                // adds the ShowingDTO to the arrayList
+             FilmDTO film = new FilmDTO(rs.getInt("FilmId"),rs.getString("FilmName"), "", "");
+             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaId"), rs.getString("CinemaName"), rs.getString("Address"));
+             ScreenDTO Screen = new ScreenDTO(rs.getString("ScreenId"), cinema);
+             ShowingDTO showing = new ShowingDTO (rs.getInt("ShowingId"), film,Screen,rs.getString("ShowingTime"));
+                     showingList.add(showing);               
+                     
          }
          rs.close();
          stmt.close();
@@ -52,26 +58,34 @@ public class ShowingGateway {
      return showingList;
     }
        
-    public ShowingDTO findByID(int ShowingID){
+    public ShowingDTO findByID(int ShowingId){
         ShowingDTO showing = null;
         try
         {
         Connection conn = connection.getConnect();
-        System.out.println("finding by ID");
-        String sqlStr = ("SELECT * FROM Showings WHERE ShowingID = ?"); 
-        PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setInt(1, ShowingID);
-        ResultSet rs = stmt.executeQuery();
-            while (rs.next())
-            {
-                
-             showing = new ShowingDTO(
-                     rs.getInt("ShowingID"),
-                     rs.getInt("FilmID"),
-                     rs.getString("ScreenID"),
-                     rs.getString("ShowingTime"));
-            }
-        }
+        PreparedStatement stmt = conn.prepareStatement("SELECT Showings.ShowingId, Films.filmId, Films.FilmName, Films.Duration,Screens.ScreenId,Showings.ShowingTime,Cinemas.CinemaId, Cinemas.CinemaName, Cinemas.Address"
+                 + " FROM Showings JOIN Films on Showings.FilmId = Films.FilmId"
+                 +               " JOIN Screens on Showings.ScreenId = Screens.ScreenId"
+                 +               " JOIN Cinemas on Screens.CinemaId = Cinemas.CinemaId"
+                 + " WHERE Showings.ShowingId = ?"); 
+        stmt.setInt(1, ShowingId);
+         ResultSet rs = stmt.executeQuery();
+         while (rs.next())
+         {
+             FilmDTO film = new FilmDTO(rs.getInt("FilmId"),rs.getString("FilmName"), "", rs.getString("Duration"));
+             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaId"), rs.getString("CinemaName"), rs.getString("Address"));
+             ScreenDTO Screen = new ScreenDTO(rs.getString("ScreenId"), cinema);
+             showing = new ShowingDTO (       
+                     rs.getInt("ShowingId"),
+                     film,
+                     Screen,
+                     rs.getString("ShowingTime"));               
+                     
+         }
+         rs.close();
+         stmt.close();
+         conn.close();
+     }
         catch (SQLException sqle)
         {
             System.out.println(sqle);
@@ -80,23 +94,29 @@ public class ShowingGateway {
         return showing;
     }
     
-    public ArrayList<ShowingDTO> findAllBySearched(int filmID){
+    public ArrayList<ShowingDTO> findAllBySearched(int filmId){
      Connection conn = connection.getConnect();
-     System.out.println("Connecting all by searched");
      ArrayList<ShowingDTO> SearchedShowingList = new ArrayList<>();
      
      try
      {
          
-         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Showings WHERE FilmID = ?");
-         stmt.setInt(1, filmID);
+         PreparedStatement stmt = conn.prepareStatement("SELECT Films.FilmId, Films.FilmName, Cinemas.CinemaId, Cinemas.CinemaName, Cinemas.Address, Screens.ScreenId, Showings.ShowingId, Showings.ShowingTime"
+                 + " FROM Showings JOIN Films on Showings.FilmId = Films.FilmId"
+                 +               " JOIN Screens on Showings.ScreenId = Screens.ScreenId"
+                 +               " JOIN Cinemas on Screens.CinemaId = Cinemas.CinemaId"
+                 + " WHERE Showings.FilmId = ?");
+         stmt.setInt(1, filmId);
          ResultSet rs = stmt.executeQuery();
          while (rs.next())
          {
+             FilmDTO film = new FilmDTO(rs.getInt("FilmID"),rs.getString("FilmName"), "", "");
+             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaID"), rs.getString("CinemaName"), rs.getString("Address"));
+             ScreenDTO screen = new ScreenDTO(rs.getString("ScreenID"), cinema);
              ShowingDTO showing = new ShowingDTO(         
                      rs.getInt("ShowingID"),
-                     rs.getInt("FilmID"),
-                     rs.getString("ScreenId"),
+                     film,
+                     screen,
                      rs.getString("ShowingTime"));
                      SearchedShowingList.add(showing);               
          }
@@ -114,13 +134,13 @@ public class ShowingGateway {
     public boolean insert(ShowingDTO showing){
         boolean insertOk = false;
         try 
-        {
+        {  
          Connection conn = connection.getConnect();
          System.out.println("inserting");
-         PreparedStatement stmt = conn.prepareStatement("INSERT INTO SHOWINGS (FilmID, ScreenID, ShowingTime) values (?,?,?)");
+         PreparedStatement stmt = conn.prepareStatement("INSERT INTO SHOWINGS (FilmId, ScreenId, ShowingTime) values (?,?,?)");
         
-         stmt.setInt(1, showing.getFilmID());
-         stmt.setString(2, showing.getScreenID());
+         stmt.setInt(1, showing.getFilm().getFilmId());
+         stmt.setString(2, showing.getScreen().getScreenId());
          stmt.setString(3, showing.getShowingTime());
          
          int row = stmt.executeUpdate();
@@ -143,18 +163,18 @@ public class ShowingGateway {
     try{
         Connection conn = connection.getConnect();
         System.out.println("updating showing");
-        PreparedStatement stmt = conn.prepareStatement("UPDATE SHOWINGS SET FILMID = ?, SCREENID = ?, SHOWINGTIME = ? WHERE SHOWINGID=? ");
+        PreparedStatement stmt = conn.prepareStatement("UPDATE SHOWINGS SET FilmId = ?, ScreenId = ?, ShowingTime = ? WHERE ShowingId=? ");
                  
-         stmt.setInt(1, showing.getFilmID());
-         stmt.setString(2, showing.getScreenID());
+         stmt.setInt(1, showing.getFilm().getFilmId());
+         stmt.setString(2, showing.getScreen().getScreenId());
          stmt.setString(3, showing.getShowingTime());
-         stmt.setInt(4,showing.getShowingID());
+         stmt.setInt(4,showing.getShowingId());
          int row = stmt.executeUpdate();
          updateOk = row == 1;
          
          stmt.close();
          conn.close(); 
-         System.out.println("updated showing successfully: " + showing.getShowingID());
+         
     }
             
     catch (SQLException sqle)
@@ -171,7 +191,7 @@ public class ShowingGateway {
         try{
          Connection conn = connection.getConnect();
          System.out.println("Connecting Showing");
-         PreparedStatement stmt = conn.prepareStatement("DELETE FROM showings WHERE ShowingID = ?");
+         PreparedStatement stmt = conn.prepareStatement("DELETE FROM showings WHERE ShowingId = ?");
          stmt.setInt(1,ShowingId);
          int row = stmt.executeUpdate();
          

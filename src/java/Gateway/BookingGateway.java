@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -6,6 +6,11 @@
 package Gateway;
 
 import DTO.BookingDTO;
+import DTO.CinemaDTO;
+import DTO.FilmDTO;
+import DTO.ScreenDTO;
+import DTO.ShowingDTO;
+import DTO.UserDTO;
 import dbase.DBManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,10 +23,10 @@ import java.util.*;
  * @author Joe Heath
  */
 public class BookingGateway {
-    DBManager connection = new DBManager();
+    private DBManager connection = new DBManager();
     
         
-    public ArrayList<BookingDTO> findAll(String UserName){
+    public ArrayList<BookingDTO> findAll(String Username){
      
         Connection conn = connection.getConnect();
         System.out.println("Connecting Booking");
@@ -29,17 +34,26 @@ public class BookingGateway {
           try
      {
          
-         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM BOOKINGS WHERE UserName = ?"); 
-         stmt.setString(1, UserName);
+         PreparedStatement stmt = conn.prepareStatement("SELECT Bookings.BookingId, Users.Username,Films.FilmId, Films.FilmName,Cinemas.CinemaId, Cinemas.CinemaName, Cinemas.Address, Screens.ScreenId, Showings.ShowingId, Showings.ShowingTime"
+                 + " FROM BOOKINGS JOIN Users on Bookings.Username = Users.Username"
+                 +                " JOIN Showings on Bookings.ShowingId = Showings.ShowingId"
+                 +                " JOIN Films on Films.FilmId = Showings.FilmId"
+                 +                " JOIN Screens on Showings.ScreenId = Screens.ScreenId"
+                 +                " JOIN Cinemas on Screens.CinemaId = Cinemas.CinemaId"
+                 + " WHERE Bookings.Username = ?"); 
+         stmt.setString(1, Username);
          ResultSet rs = stmt.executeQuery();
          System.out.println("making DTO");
          while (rs.next())
          {
-             BookingDTO booking = new BookingDTO(         
-                     rs.getInt("BookingId"),
-                     rs.getString("UserName"),
-                     rs.getInt("ShowingID"));
-                     bookingList.add(booking);               
+             
+             UserDTO user = new UserDTO(rs.getString("Username"),"", "", "","", "","",null, false);
+             FilmDTO film = new FilmDTO(rs.getInt("FilmId"),rs.getString("FilmName"), "", "");
+             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaId"), rs.getString("CinemaName"), rs.getString("Address"));
+             ScreenDTO Screen = new ScreenDTO(rs.getString("ScreenId"), cinema);
+             ShowingDTO showing = new ShowingDTO(rs.getInt("ShowingId"), film, Screen, rs.getString("ShowingTime"));
+             BookingDTO booking = new BookingDTO(rs.getInt("BookingId"), user, showing);
+             bookingList.add(booking);               
          }
          rs.close();
          stmt.close();
@@ -49,29 +63,36 @@ public class BookingGateway {
      {
          System.out.println(sqle);
      }
-     return bookingList; // passes the arrayList back to the FilmManager 
+     return bookingList; 
     }
 
     
-    public BookingDTO findByID(int BookingID)
+    public BookingDTO findById(int BookingId)
     {
         BookingDTO booking = null;
         try
         {
         Connection conn = connection.getConnect();
-        System.out.println("Connecting Booking");
-        String sqlStr = ("SELECT * FROM BOOKINGS WHERE BookingID = ?"); 
-        PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setInt(1, BookingID);
-        ResultSet rs = stmt.executeQuery();
-            while (rs.next())
-            {
-                
-             booking = new BookingDTO(
-                     rs.getInt("BookingID"),
-                     rs.getString("UserName"),
-                     rs.getInt("ShowingId"));
-            }
+        PreparedStatement stmt = conn.prepareStatement("SELECT Bookings.BookingId, Users.Username,Films.FilmId, Films.FilmName,Cinemas.CinemaId, Cinemas.CinemaName, Cinemas.Address, Screens.ScreenId, Showings.ShowingId, Showings.ShowingTime"
+                 + " FROM BOOKINGS JOIN Users on Bookings.Username = Users.Username"
+                 +                " JOIN Showings on Bookings.ShowingID = Showings.ShowingID"
+                 +                " JOIN Films on Films.FilmId = Showings.FilmId"
+                 +                " JOIN Screens on Showings.ScreenId = Screens.ScreenId"
+                 +                " JOIN Cinemas on Screens.CinemaId = Cinemas.CinemaId"
+                 + " WHERE BookingId = ?"); 
+         stmt.setInt(1, BookingId);
+         ResultSet rs = stmt.executeQuery();
+         System.out.println("making DTO");
+         while (rs.next())
+         {
+             
+             UserDTO user = new UserDTO(rs.getString("Username"),"", "", "","", "","",null, false);
+             FilmDTO film = new FilmDTO(rs.getInt("FilmId"),rs.getString("FilmName"), "", "");
+             CinemaDTO cinema = new CinemaDTO(rs.getInt("CinemaId"), rs.getString("CinemaName"), rs.getString("Address"));
+             ScreenDTO Screen = new ScreenDTO(rs.getString("ScreenId"), cinema);
+             ShowingDTO showing = new ShowingDTO(rs.getInt("ShowingId"), film, Screen, rs.getString("ShowingTime"));
+             booking = new BookingDTO(rs.getInt("BookingId"), user, showing);
+         }
         }
         catch (SQLException sqle)
         {
@@ -87,11 +108,11 @@ public class BookingGateway {
         {
          Connection conn = connection.getConnect();
          System.out.println("Connecting Booking");
-         PreparedStatement stmt = conn.prepareStatement("INSERT INTO BOOKINGS (UserName, ShowingID) values (?,?)");
+         PreparedStatement stmt = conn.prepareStatement("INSERT INTO BOOKINGS (Username, ShowingId) values (?,?)");
         
          
-         stmt.setString(1, booking.getUserName());
-         stmt.setInt(2, booking.getShowingID());
+         stmt.setString(1, booking.getUser().getUsername());
+         stmt.setInt(2, booking.getShowing().getShowingId());
          
          int row = stmt.executeUpdate();
          
@@ -113,7 +134,7 @@ public class BookingGateway {
         try{
          Connection conn = connection.getConnect();
          System.out.println("Connecting Booking");
-         PreparedStatement stmt = conn.prepareStatement("DELETE FROM BOOKINGS WHERE BookingID = ?");
+         PreparedStatement stmt = conn.prepareStatement("DELETE FROM BOOKINGS WHERE BookingId = ?");
          stmt.setInt(1,BookingId);
          int row = stmt.executeUpdate();
          

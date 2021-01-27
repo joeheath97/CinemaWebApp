@@ -63,7 +63,7 @@ public class UserUI {
     public BookingDTO AddBooking(BookingDTO Booking){
                 if(BookingMgr.makeBooking(Booking))
         {
-            return BookingMgr.getBooking(Booking.getBookingID());
+            return BookingMgr.getBooking(Booking.getBookingId());
         }
         return null;
     }
@@ -80,14 +80,14 @@ public class UserUI {
     public UserDTO createAccount(UserDTO user){
         if(UserMgr.addUser(user))
         {
-            return UserMgr.login(user.getUserName(), user.getPassword());
+            return UserMgr.login(user.getUsername(), user.getPassword());
         }
         return null;
     }
     
-    public ScreenDTO findScreen(String ScreenID){
-        return screenMgr.findByScreenID(ScreenID);
-    }
+//    public ScreenDTO findScreen(String ScreenID){
+//        return screenMgr.find(ScreenID);
+//    }
     
     public CinemaDTO findCinema (int cinemaID){
         return cinemaMgr.findCinemaByID(cinemaID);

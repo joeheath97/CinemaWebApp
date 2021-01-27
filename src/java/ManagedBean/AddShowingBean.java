@@ -1,6 +1,7 @@
-
 package ManagedBean;
 
+import DTO.FilmDTO;
+import DTO.ScreenDTO;
 import DTO.ShowingDTO;
 import UI.AdminUI;
 import javax.inject.Named;
@@ -10,28 +11,26 @@ import javax.inject.Inject;
 @Named(value = "addShowingBean")
 @RequestScoped
 public class AddShowingBean {
-    
+
     private int ShowingID;
     private int FilmID;
     private String ScreenID;
     private String ShowingTime;
     private AdminUI adminUI = new AdminUI();
-    
+
     @Inject
     ShowingBean showingBean;
 
     public AddShowingBean() {
     }
-    
-    public String addShowing()
-    {
-        showingBean.setShowingDetails(
-                                        adminUI.addShowing(
-                                                new ShowingDTO(
-                                                ShowingID,
-                                                FilmID,
-                                                ScreenID,
-                                                ShowingTime)));
+
+    public String addShowing() {
+        adminUI.addShowing(
+                new ShowingDTO(
+                        ShowingID,
+                        new FilmDTO(FilmID, "", "", ""),
+                        new ScreenDTO(ScreenID, null),
+                        ShowingTime));
         return "ViewAllShowings";
     }
 
@@ -66,5 +65,5 @@ public class AddShowingBean {
     public void setShowingTime(String showingTime) {
         this.ShowingTime = showingTime;
     }
-    
+
 }

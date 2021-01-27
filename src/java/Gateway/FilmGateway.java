@@ -51,21 +51,21 @@ public class FilmGateway {
      return filmList; // passes the arrayList back to the FilmManager 
     }
     
-    public FilmDTO findByID(int FilmID){
+    public FilmDTO findByID(int FilmId){
         FilmDTO film = null;
         try
         {
         Connection conn = connection.getConnect();
         System.out.println("Connecting Film");
-        String sqlStr = ("SELECT * FROM Films WHERE FilmID = ?"); 
+        String sqlStr = ("SELECT * FROM Films WHERE FilmId = ?"); 
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setInt(1, FilmID);
+        stmt.setInt(1, FilmId);
         ResultSet rs = stmt.executeQuery();
             while (rs.next())
             {
                 
              film = new FilmDTO(
-                     rs.getInt("FilmID"),
+                     rs.getInt("FilmId"),
                      rs.getString("FilmName"),
                      rs.getString("LeadActor"),
                      rs.getString("Duration"));
@@ -109,10 +109,10 @@ public class FilmGateway {
         try{
          Connection conn = connection.getConnect();
          System.out.println("Connecting Film");
-         PreparedStatement stmt = conn.prepareStatement("DELETE FROM showings WHERE FilmID = ?");
+         PreparedStatement stmt = conn.prepareStatement("DELETE FROM showings WHERE FilmId = ?");
          stmt.setInt(1,FilmId);
          int row = stmt.executeUpdate();
-         stmt = conn.prepareStatement("DELETE FROM films WHERE filmID = ?");
+         stmt = conn.prepareStatement("DELETE FROM films WHERE filmId = ?");
          stmt.setInt(1,FilmId);
          row = stmt.executeUpdate();
          

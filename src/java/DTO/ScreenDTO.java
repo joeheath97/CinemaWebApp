@@ -1,26 +1,38 @@
 
 package DTO;
 
-public class ScreenDTO {
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement
+public class ScreenDTO implements Serializable{
     
-    private String SscreenId;
-    private int cinemaId;
+    private String screenId;
+    private CinemaDTO cinema;
 
-    public ScreenDTO(String SscreenId, int cinemaId) {
-        this.SscreenId = SscreenId;
-        this.cinemaId = cinemaId;
+    public ScreenDTO(String screenId, CinemaDTO cinema) {
+        this.screenId = screenId;
+        this.cinema = cinema;
     }
-
-    public String getScreenID() {
-        return SscreenId;
-    }
-
-    public int getCinemaID() {
-        return cinemaId;
-    }
-
-
-
-
     
+    public ScreenDTO()
+    {
+        
+    }
+
+    public String getScreenId() {
+        return screenId;
+    }
+
+    public void setScreenId(String screenId) {
+        this.screenId = screenId;
+    }
+
+    public CinemaDTO getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(CinemaDTO cinema) {
+        this.cinema = cinema;
+    }
+   
 }

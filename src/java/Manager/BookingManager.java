@@ -22,11 +22,11 @@ public class BookingManager {
         return gateway.insert(booking);
         
     }
-    public BookingDTO getBooking(int BookingID){
-        return gateway.findByID(BookingID);
+    public BookingDTO getBooking(int BookingId){
+        return gateway.findById(BookingId);
     }
-    public boolean cancelBooking(int BookingID){
-        return gateway.delete(BookingID);
+    public boolean cancelBooking(int BookingId){
+        return gateway.delete(BookingId);
     }
     
     public ArrayList<BookingDTO> getAllBookings(String Username){

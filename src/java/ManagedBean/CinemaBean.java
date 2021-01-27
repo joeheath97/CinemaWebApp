@@ -47,10 +47,10 @@ public class CinemaBean implements Serializable {
         return CinemaDetails;
     }
         
-    public String findCinemaAddress(int CinemaID)
-    {
-        CinemaDetails = UserUI.getCinemaDetails(CinemaID);
-        return CinemaDetails.getAddress();
-    }
+//    public String findCinemaAddress(int CinemaID)
+//    {
+//        CinemaDetails = UserUI.getCinemaDetails(CinemaID);
+//        return CinemaDetails.getAddress();
+//    }
 
 }

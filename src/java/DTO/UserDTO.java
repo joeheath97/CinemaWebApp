@@ -5,66 +5,134 @@
  */
 package DTO;
 
-/**
- *
- * @author Joe Heath
- */
-public class UserDTO {
+import java.io.Serializable;
+import java.util.Date;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class UserDTO implements Serializable {
     
 
-    private String UserName;
-    private String Password;
-    private String AddressLine1;
-    private String AddressLine2;
-    private String Town;
+    private String username;
+    private String password;
+    private String addressLine1;
+    private String addressLine2;
+    private String town;
     private String county;
-    private String PostCode;
+    private String postCode;
+    private String dateOfBirth;
     private boolean isAdmin = false;
-
-    public UserDTO(String UserName, String Password, String AddressLine1, String AddressLine2, String Town, String county, String PostCode, boolean isAdmin) {
-        this.UserName = UserName;
-        this.Password = Password;
-        this.AddressLine1 = AddressLine1;
-        this.AddressLine2 = AddressLine2;
-        this.Town = Town;
+    
+    
+    
+    public UserDTO(){
+        
+    }
+   
+    public UserDTO(String username, String password, String addressLine1, String addressLine2, String town, String county, String postCode,String dateOfBirth, boolean isAdmin) {
+        this.username = username;
+        this.password = password;
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.town = town;
         this.county = county;
-        this.PostCode = PostCode;
+        this.postCode = postCode;
+        this.dateOfBirth = dateOfBirth;
         this.isAdmin = isAdmin;
     }
+
     
- 
-
-    public String getUserName() {
-        return UserName;
+    public String getUsername()
+    {
+        return username;
     }
 
-    public String getPassword() {
-        return Password;
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 
-    public String getAddressLine1() {
-        return AddressLine1;
+    public String getPassword()
+    {
+        return password;
     }
 
-    public String getAddressLine2() {
-        return AddressLine2;
+    public void setPassword(String password)
+    {
+        this.password = password;
     }
 
-    public String getTown() {
-        return Town;
+    public String getAddressLine1()
+    {
+        return addressLine1;
     }
 
-    public String getCounty() {
+    public void setAddressLine1(String addressLine1)
+    {
+        this.addressLine1 = addressLine1;
+    }
+
+    public String getAddressLine2()
+    {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(String addressLine2)
+    {
+        this.addressLine2 = addressLine2;
+    }
+
+    public String getTown()
+    {
+        return town;
+    }
+
+    public void setTown(String town)
+    {
+        this.town = town;
+    }
+
+    public String getCounty()
+    {
         return county;
     }
 
-    public String getPostCode() {
-        return PostCode;
+    public void setCounty(String county)
+    {
+        this.county = county;
     }
 
-    public boolean isIsAdmin() {
+    public String getPostCode()
+    {
+        return postCode;
+    }
+
+    public void setPostCode(String postCode)
+    {
+        this.postCode = postCode;
+    }
+
+    public String getDateOfBirth()
+    {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth)
+    {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public boolean isIsAdmin()
+    {
         return isAdmin;
     }
+
+    public void setIsAdmin(boolean isAdmin)
+    {
+        this.isAdmin = isAdmin;
+    }
+
+   
     
     
 }

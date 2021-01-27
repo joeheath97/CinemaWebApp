@@ -36,13 +36,14 @@ public class UserGateway {
          while (rs.next())
          {
              UserDTO user = new UserDTO(        // this create a UserDTO called "user" 
-                     rs.getString("UserName"),
+                     rs.getString("Username"),
                      rs.getString("Password"),
                      rs.getString("AddressLine1"),
                      rs.getString("AddressLine2"),
                      rs.getString("Town"),
                      rs.getString("County"),
                      rs.getString("Postcode"),
+                     rs.getString("DOB"),
                      rs.getBoolean("isAdmin"));
                      userList.add(user);                // adds the UserDTO to the arrayList
          }
@@ -57,7 +58,7 @@ public class UserGateway {
      return userList; // passes the arrayList back to the UseraManager 
     }
     
-    public UserDTO find(String UserName, String Password){
+    public UserDTO find(String Username, String Password){
         UserDTO user = null;    // set USerDTO to null so if perameters aren't found returns null
         String HashPass;
         
@@ -73,22 +74,23 @@ public class UserGateway {
         
         System.out.println("Getting user");
         Connection conn = connection.getConnect();
-        String sqlStr = ("SELECT * FROM Users WHERE UserName = ? AND Password = ?"); 
+        String sqlStr = ("SELECT * FROM Users WHERE Username = ? AND Password = ?"); 
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setString(1, UserName);
+        stmt.setString(1, Username);
         stmt.setString(2, HashPass);
         ResultSet rs = stmt.executeQuery();
             while (rs.next())
             {
                 
              user = new UserDTO(
-                     rs.getString("UserName"),
+                     rs.getString("Username"),
                      rs.getString("Password"),
                      rs.getString("AddressLine1"),
                      rs.getString("AddressLine2"),
                      rs.getString("Town"),
                      rs.getString("County"),
                      rs.getString("Postcode"),
+                     rs.getString("DOB"),
                      rs.getBoolean("isAdmin"));
             }
         }
@@ -98,16 +100,15 @@ public class UserGateway {
         return user;
     }
     
-        public UserDTO find(String UserName){
-        UserDTO user = null;    // set USerDTO to null so if perameters aren't found returns null
-        
+        public UserDTO find(String Username){
+        UserDTO user = null;   
         try{
         
         System.out.println("Getting user");
         Connection conn = connection.getConnect();
         String sqlStr = ("SELECT * FROM Users WHERE UserName = ? "); 
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setString(1, UserName);
+        stmt.setString(1, Username);
         ResultSet rs = stmt.executeQuery();
             while (rs.next())
             {
@@ -120,6 +121,7 @@ public class UserGateway {
                      rs.getString("Town"),
                      rs.getString("County"),
                      rs.getString("Postcode"),
+                     rs.getString("DOB"),
                      rs.getBoolean("isAdmin"));
             }
         }
@@ -146,16 +148,18 @@ public class UserGateway {
         try 
         {
          Connection conn = connection.getConnect();
-         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Users (UserName, Password, AddressLine1, AddressLine2, Town, County, Postcode, isAdmin) values (?,?,?,?,?,?,?,?)");
+         
+         PreparedStatement stmt = conn.prepareStatement("INSERT INTO Users (UserName, Password, AddressLine1, AddressLine2, Town, County, Postcode,DOB, isAdmin) values (?,?,?,?,?,?,?,?,?)");
         
-         stmt.setString(1, user.getUserName());
+         stmt.setString(1, user.getUsername());
          stmt.setString(2, HashPass);
          stmt.setString(3, user.getAddressLine1());
          stmt.setString(4, user.getAddressLine2());
          stmt.setString(5, user.getTown());
          stmt.setString(6, user.getCounty());
          stmt.setString(7, user.getPostCode());
-         stmt.setBoolean(8, user.isIsAdmin());
+         stmt.setString(8, user.getDateOfBirth());
+         stmt.setBoolean(9, user.isIsAdmin());
          
          int row = stmt.executeUpdate();
          

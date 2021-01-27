@@ -7,6 +7,7 @@ package ManagedBean;
 
 import DTO.UserDTO;
 import UI.UserUI;
+import java.util.Date;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -32,6 +33,7 @@ public class AddUserBean {
     private String Town;
     private String county;
     private String PostCode;
+    private String DOB;
     private boolean isAdmin;
     
     public AddUserBean() {
@@ -48,6 +50,7 @@ public class AddUserBean {
                                 AddressLine2,
                                 Town, county,
                                 PostCode,
+                                DOB,
                                 isAdmin)));
         return "index";
     }
@@ -67,7 +70,6 @@ public class AddUserBean {
     public void setUserBean(UserBean userBean) {
         this.userBean = userBean;
     }
-
 
     public String getUserName() {
         return UserName;
@@ -123,6 +125,14 @@ public class AddUserBean {
 
     public void setPostCode(String PostCode) {
         this.PostCode = PostCode;
+    }
+    
+    public String getDateOfBirth(){
+        return DOB;
+    }
+    
+    public void setDateOfBirth(String DOB){
+        this.DOB = DOB;
     }
 
     public boolean isIsAdmin() {

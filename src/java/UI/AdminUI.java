@@ -27,83 +27,70 @@ import java.util.*;
 @Named(value = "adminUI")
 @RequestScoped
 public class AdminUI {
-    
+
     private FilmManager filmMgr = new FilmManager();
     private UserManager UserMgr = new UserManager();
     private ShowingManager showingMgr = new ShowingManager();
     private ScreenManager screenMgr = new ScreenManager();
     private CinemaManager cinemaMgr = new CinemaManager();
-    
-    public AdminUI()
-    {
+
+    public AdminUI() {
     }
-    
-    public ArrayList<ShowingDTO> getAllShowings(){
-        
+
+    public ArrayList<ShowingDTO> getAllShowings() {
+
         return showingMgr.getAllShowings();
     }
-    
-    public ShowingDTO addShowing(ShowingDTO showing){
-                if(showingMgr.addShowing(showing))
-        {
-            return showingMgr.getShowing(showing.getShowingID());
+
+    public boolean addShowing(ShowingDTO showing) {
+        return showingMgr.addShowing(showing);
+    }
+
+    public ShowingDTO getShowing(int ShowingId) {
+        return showingMgr.getShowing(ShowingId);
+    }
+
+    public ShowingDTO modifyShowing(ShowingDTO showing) {
+        if (showingMgr.modifyShowing(showing)) {
+            return showingMgr.getShowing(showing.getShowingId());
         }
         return null;
     }
-    
-    public ShowingDTO getShowing(int ShowingID)
-    {
-        return showingMgr.getShowing(ShowingID);
+
+    public boolean removeShowing(int ShowingId) {
+        return showingMgr.romoveShowing(ShowingId);
     }
-    
-    public ShowingDTO modifyShowing(ShowingDTO showing){
-        if(showingMgr.modifyShowing(showing))
-        {
-            return showingMgr.getShowing(showing.getShowingID());
-        }
-        return null;
-    }
-    
-    public boolean removeShowing(int ShowingID){
-        return showingMgr.romoveShowing(ShowingID);
-    }
-    
-    public ArrayList<UserDTO> getAllUser(){
+
+    public ArrayList<UserDTO> getAllUser() {
         return UserMgr.getAllUser();
     }
-    
-    public FilmDTO getFilm(int filmID)
-    {
-        return filmMgr.findFilm(filmID);
+
+    public FilmDTO getFilm(int filmId) {
+        return filmMgr.findFilm(filmId);
     }
-    
-    public ArrayList<FilmDTO> getAllFilms(){
+
+    public ArrayList<FilmDTO> getAllFilms() {
         return filmMgr.getAllFilms();
     }
-    
-    public FilmDTO addFilm(FilmDTO film){
-        if(filmMgr.addFilm(film))
-        {
-            return filmMgr.findFilm(film.getFilmID());
+
+    public FilmDTO addFilm(FilmDTO film) {
+        if (filmMgr.addFilm(film)) {
+            return filmMgr.findFilm(film.getFilmId());
         }
         return null;
 
     }
-    
-    public boolean removeFilm (int FilmID){
-        return filmMgr.removeFilm(FilmID);
-    }
-    
 
-    
-    public ArrayList<CinemaDTO> getAllCinema(){
+    public boolean removeFilm(int FilmId) {
+        return filmMgr.removeFilm(FilmId);
+    }
+
+    public ArrayList<CinemaDTO> getAllCinema() {
         return cinemaMgr.getAllCinema();
     }
-    
-    public ArrayList<ScreenDTO> getAllScreen(){
+
+    public ArrayList<ScreenDTO> getAllScreen() {
         return screenMgr.getAllScreens();
     }
-    
 
-    
 }

@@ -11,17 +11,17 @@ import java.util.ArrayList;
 
 public class ScreenManager {
     
-    private ArrayList<ScreenDTO> FilmList = new ArrayList<>();
+    private ArrayList<ScreenDTO> ScreenList = new ArrayList<>();
     private ScreenGateway gateway = new ScreenGateway();
     
         
     public ArrayList<ScreenDTO> getAllScreens(){
         return gateway.findAll();
     }
-    
-    public ScreenDTO findByScreenID (String ScreenID){
-        return gateway.findByScreenID(ScreenID);
-    }
+//    
+//    public ScreenDTO find(String ScreenID){
+//        return gateway.find(ScreenID);
+//    }
         
     
 }

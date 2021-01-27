@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package ManagedBean;
+import DTO.FilmDTO;
+import DTO.ScreenDTO;
 import UI.AdminUI;
 import javax.inject.Named;
 import DTO.ShowingDTO;
@@ -19,9 +21,9 @@ import javax.inject.Inject;
 @RequestScoped
 public class ModifyShowingBean {
 
-    private int ShowingID;
-    private int FilmID;
-    private String ScreenID;
+    private int ShowingId;
+    private int FilmId;
+    private String ScreenId;
     private String ShowingTime;
     
     private AdminUI admin = new AdminUI();
@@ -31,20 +33,19 @@ public class ModifyShowingBean {
     public ModifyShowingBean() {
     }
     
-    public String gotoModify(int showingID){
-        showingBean.setShowingDetails(admin.getShowing(showingID));
+    public String gotoModify(int showingId){
+        showingBean.setShowingDetails(admin.getShowing(showingId));
         return "ModifyShowingPage";   
     }
     
     public String modifyShowing(){
         
-        ShowingID = showingBean.getShowingInfo().getShowingID();
+        ShowingId = showingBean.getShowingInfo().getShowingId();
         
-        System.out.println("FilmID : " + FilmID);
-        System.out.println("ScreenId : " + ScreenID);
-        System.out.println("Showing Time : " + ShowingTime);
-        
-        admin.modifyShowing(new ShowingDTO(ShowingID,FilmID,ScreenID,ShowingTime));
+        admin.modifyShowing(new ShowingDTO(ShowingId,
+                new FilmDTO(FilmId,"","",""),
+                new ScreenDTO(ScreenId,null),
+                              ShowingTime));
         
         return "ViewAllShowings";
 
@@ -53,25 +54,25 @@ public class ModifyShowingBean {
 
     
 
-    public int getShowingID() {
-        return ShowingID;
+    public int getShowingId() {
+        return ShowingId;
     }
 
 
-    public int getFilmID() {
-        return FilmID;
+    public int getFilmId() {
+        return FilmId;
     }
 
-    public void setFilmID(int FilmID) {
-        this.FilmID = FilmID;
+    public void setFilmId(int FilmId) {
+        this.FilmId = FilmId;
     }
 
     public String getScreenId() {
-        return ScreenID;
+        return ScreenId;
     }
 
-    public void setScreenId(String ScreenID) {
-        this.ScreenID = ScreenID;
+    public void setScreenId(String ScreenId) {
+        this.ScreenId = ScreenId;
     }
 
     public String getShowingTime() {

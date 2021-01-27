@@ -7,6 +7,7 @@ package ManagedBean;
 
 import DTO.BookingDTO;
 import DTO.ShowingDTO;
+import DTO.UserDTO;
 import UI.UserUI;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -20,11 +21,11 @@ import javax.inject.Inject;
 @RequestScoped
 public class AddBookingBean {
 
-    private int BookingID;
+    private int BookingId;
     private String UserName;
-    private int ShowingID;
+    private int ShowingId;
     private UserUI userUI = new UserUI();
-    private ShowingDTO showingdetails = null;
+    //private ShowingDTO showingdetails = null;
     public AddBookingBean() {
         
     }
@@ -34,35 +35,30 @@ public class AddBookingBean {
     @Inject
     ShowingBean showingBean;
 
-    public int getBookingID() {
-        return BookingID;
+    public int getBookingId() {
+        return BookingId;
     }
 
     public String getUserName() {
         return UserName;
     }
 
-    public int getShowingID() {
-        return ShowingID;
+    public int getShowingId() {
+        return ShowingId;
     }
 
-
-    
-    
-    
-    
     @Inject
     BookingBean bookingBean;
     public String makeBooking()
     {   
-     UserName = userBean.getUserDetails().getUserName();
-     ShowingID = showingBean.getShowingInfo().getShowingID();
+     UserName = userBean.getUserDetails().getUsername();
+     ShowingId = showingBean.getShowingInfo().getShowingId();
              
-        bookingBean.setBookingDetails(userUI.AddBooking(new BookingDTO(
-                                                            BookingID,
-                                                            UserName,
-                                                            ShowingID)));
+        userUI.AddBooking(new BookingDTO(BookingId,
+                          new UserDTO(UserName,"","","","","","",null,false),
+                          new ShowingDTO(ShowingId, null,null,"")));
               return "UserPage";                                              
     }
     
 }
+

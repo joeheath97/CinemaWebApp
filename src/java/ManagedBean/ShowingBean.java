@@ -35,7 +35,6 @@ ScreenBean ScreenBean;
     private ShowingDTO ShowingDetails = null;
     private ArrayList<ShowingDTO> searchResults = new ArrayList<>();
     private int search;
-    private CinemaDTO CinemaDetails = null;
     
     public ShowingBean() {
     }
@@ -47,11 +46,11 @@ ScreenBean ScreenBean;
         return allShowings; 
     }
      
-    public ShowingDTO getShowingDetails(int ShowingID)
-    {
-       ShowingDetails = userUI.getShowing(ShowingID);
-       return ShowingDetails;
-    }
+//    public ShowingDTO getShowingDetails(int ShowingID)
+//    {
+//       ShowingDetails = userUI.getShowing(ShowingID);
+//       return ShowingDetails;
+//    }
     
     public ShowingDTO findShowing(int ShowingID) 
     {
@@ -59,11 +58,11 @@ ScreenBean ScreenBean;
        return ShowingDetails;
     }
         
-    public String findShowingTime(int ShowingID) 
-    {
-       ShowingDetails = userUI.getShowing(ShowingID);
-       return ShowingDetails.getShowingTime();
-    }
+//    public String findShowingTime(int ShowingID) 
+//    {
+//       ShowingDetails = userUI.getShowing(ShowingID);
+//       return ShowingDetails.getShowingTime();
+//    }
     
     public void setShowingDetails(ShowingDTO ShowingDetails) 
     {
@@ -79,11 +78,9 @@ ScreenBean ScreenBean;
         return searchResults;
     }
    
-    public String ViewShowing(int ShowingID, String ScreenID)
+    public String ViewShowing(int ShowingID)
     {    
         ShowingDetails = userUI.getShowing(ShowingID);
-        ScreenBean.setScreenDetails(userUI.findScreen(ScreenID));
-        CinemaBean.setCinemaDetails(userUI.getCinemaDetails(ScreenBean.getScreenDetails().getCinemaID()));
         return "ViewShowing";  
     }
     
@@ -100,7 +97,7 @@ ScreenBean ScreenBean;
 
     public void setSearch(int search) {
         this.search = search;
-    }
+   }
     
     
 }

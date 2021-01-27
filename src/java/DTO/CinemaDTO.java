@@ -5,11 +5,15 @@
  */
 package DTO;
 
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Joe Heath
  */
-public class CinemaDTO {
+@XmlRootElement
+public class CinemaDTO implements Serializable{
     
     private int cinemaId;
     private String cinemaName;
@@ -20,8 +24,28 @@ public class CinemaDTO {
         this.cinemaName = cinemaName;
         this.address = address;
     }
+    
+    public CinemaDTO()
+    {
+        
+    }
 
-    public int getCinemaID() {
+    public void setCinemaId(int cinemaId)
+    {
+        this.cinemaId = cinemaId;
+    }
+
+    public void setCinemaName(String cinemaName)
+    {
+        this.cinemaName = cinemaName;
+    }
+
+    public void setAddress(String address)
+    {
+        this.address = address;
+    }
+
+    public int getCinemaId() {
         return cinemaId;
     }
 

@@ -37,7 +37,7 @@ public class CinemaGateway {
              CinemaDTO Cinema = new CinemaDTO(        // this create a ScreenDTO called "film" 
                      rs.getInt("CinemaID"),
                      rs.getString("CinemaName"),
-                     rs.getString("CinemaAddress"));
+                     rs.getString("Address"));
                      ScreenList.add(Cinema);                // adds the ScreenDTO to the arrayList
          }
          rs.close();
@@ -52,22 +52,22 @@ public class CinemaGateway {
     }
     
         
-    public CinemaDTO findByID(int CinemaID){
+    public CinemaDTO findByID(int CinemaId){
         System.out.println("beginning cinema find");
         CinemaDTO Cinema = null;
         try
         {
         Connection conn = connection.getConnect();
         System.out.println("Connecting Cinema");
-        String sqlStr = ("SELECT * FROM Cinemas WHERE CinemaID = ?"); 
+        String sqlStr = ("SELECT * FROM Cinemas WHERE CinemaId = ?"); 
         PreparedStatement stmt = conn.prepareStatement(sqlStr);
-        stmt.setInt(1, CinemaID);
+        stmt.setInt(1, CinemaId);
         ResultSet rs = stmt.executeQuery();
             while (rs.next())
             {
                 
              Cinema = new CinemaDTO(
-                     rs.getInt("CinemaID"),
+                     rs.getInt("CinemaId"),
                      rs.getString("CinemaName"),
                      rs.getString("Address"));
             }

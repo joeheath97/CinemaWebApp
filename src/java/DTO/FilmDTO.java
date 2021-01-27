@@ -1,7 +1,13 @@
 
 package DTO;
 
-public class FilmDTO {
+import java.io.Serializable;
+import javax.xml.bind.annotation.XmlRootElement;
+
+
+
+@XmlRootElement
+public class FilmDTO implements Serializable{
     
     private int filmId;
     private String filmName;
@@ -15,7 +21,32 @@ public class FilmDTO {
         this.duration = duration;
     }
 
-    public int getFilmID() {
+    public FilmDTO()
+    {
+        
+    }
+
+    public void setFilmId(int filmId)
+    {
+        this.filmId = filmId;
+    }
+
+    public void setFilmName(String filmName)
+    {
+        this.filmName = filmName;
+    }
+
+    public void setLeadActor(String leadActor)
+    {
+        this.leadActor = leadActor;
+    }
+
+    public void setDuration(String duration)
+    {
+        this.duration = duration;
+    }
+    
+    public int getFilmId() {
         return filmId;
     }
 
